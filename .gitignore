@@ -1,1 +1,32 @@
-.ai_memory/
+# Flutter 相关
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+
+# Android 相关
+.gradle/
+local.properties
+*.kwks
+*.keystore
+*.jks
+project.properties
+Flutter/Generated.xcconfig
+Flutter/flutter_export_environment.sh
+
+# IDE 相关
+.idea/
+.vscode/
+*.iml
+*.swp
+*.lock
+
+# 操作系统相关
+.DS_Store
+Thumbs.db
+
+# 你的 AI 记忆文件（根据你的规则决定是否保留，建议保留以同步上下文）
+# .ai_memory/
