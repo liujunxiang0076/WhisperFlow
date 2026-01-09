@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
-import 'package:system_alert_window/system_alert_window.dart';
+import 'package:system_alert_window/system_alert_window.dart' as saw;
 
 void main() {
   runApp(const MyApp());
@@ -40,54 +40,58 @@ class _TranslatorHomePageState extends State<TranslatorHomePage> {
     super.initState();
     _audioRecorder = AudioRecorder();
     _requestOverlayPermissions();
-    // SystemAlertWindow.registerOnClickListener(_overlayEntryPoint);
+    // saw.SystemAlertWindow.registerOnClickListener(_overlayEntryPoint);
   }
 
   // Must be static or top-level
   /*
   @pragma('vm:entry-point')
-  static void _overlayEntryPoint(SystemWindowPrefetchArgument? argument) {
+  static void _overlayEntryPoint(saw.SystemWindowPrefetchArgument? argument) {
     if (argument?.tag == "close_button") {
-      SystemAlertWindow.closeSystemWindow(prefMode: SystemWindowPrefMode.OVERLAY);
+      saw.SystemAlertWindow.closeSystemWindow(prefMode: saw.SystemWindowPrefMode.OVERLAY);
     }
   }
   */
 
   Future<void> _requestOverlayPermissions() async {
-    await SystemAlertWindow.requestPermissions(prefMode: SystemWindowPrefMode.OVERLAY);
+    await saw.SystemAlertWindow.requestPermissions(prefMode: saw.SystemWindowPrefMode.OVERLAY);
   }
 
-  void _showOverlay() {
-    SystemAlertWindow.showSystemWindow(
-      height: 100,
-      gravity: SystemWindowGravity.BOTTOM,
-      prefMode: SystemWindowPrefMode.OVERLAY,
-      /* 
-      // Temporary commented out due to analysis issues with package version
-      header: SystemWindowHeader(
-        subTitle: SystemWindowText(
-          text: "WhisperFlow Captions",
-          fontSize: 10,
+  Future<void> _showOverlay() async {
+    await saw.SystemAlertWindow.requestPermissions(prefMode: saw.SystemWindowPrefMode.OVERLAY);
+    saw.SystemAlertWindow.showSystemWindow(
+      height: 250,
+      gravity: saw.SystemWindowGravity.CENTER,
+      prefMode: saw.SystemWindowPrefMode.OVERLAY,
+      header: saw.SystemWindowHeader(
+        title: saw.SystemWindowText(
+          text: "WhisperFlow",
+          fontSize: 12,
           textColor: Colors.white,
         ),
       ),
-      body: SystemWindowBody(
+      body: saw.SystemWindowBody(
+        decoration: saw.SystemWindowDecoration(
+          startColor: Colors.black87,
+          endColor: Colors.black87,
+          borderRadius: 10.0,
+        ),
         rows: [
-          EachRow(
+          saw.EachRow(
             columns: [
-              EachColumn(
-                text: SystemWindowText(
-                  text: "正在监听...",
+              saw.EachColumn(
+                text: saw.SystemWindowText(
+                  text: "等待语音输入...",
                   fontSize: 16,
                   textColor: Colors.white,
+                  fontWeight: saw.FontWeight.BOLD,
                 ),
               ),
             ],
-            gravity: ContentGravity.CENTER,
+            gravity: saw.ContentGravity.CENTER,
           ),
         ],
       ),
-      */
     );
   }
 

@@ -28,5 +28,41 @@ Flutter/flutter_export_environment.sh
 .DS_Store
 Thumbs.db
 
+# 代码分析报告
+analysis_output.txt
+
+# 构建和缓存文件
+*.log
+*.tmp
+*.cache
+.cxx/
+
+# 平台特定的构建产物
+**/DerivedData/
+**/Pods/
+**/xcuserdata/
+**/dgph
+*.mode1v3
+*.mode2v3
+*.moved-aside
+*.pbxuser
+*.perspectivev3
+**/*sync/
+.sconsign.dblite
+.tags*
+**/.vagrant/
+**/.symlinks/
+profile
+**/.generated/
+
+# Visual Studio 相关
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+x64/
+x86/
+*.[Cc]ache
+
 # 你的 AI 记忆文件（根据你的规则决定是否保留，建议保留以同步上下文）
 # .ai_memory/
