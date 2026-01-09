@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
+import 'package:system_alert_window/system_alert_window.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,6 +39,56 @@ class _TranslatorHomePageState extends State<TranslatorHomePage> {
   void initState() {
     super.initState();
     _audioRecorder = AudioRecorder();
+    _requestOverlayPermissions();
+    // SystemAlertWindow.registerOnClickListener(_overlayEntryPoint);
+  }
+
+  // Must be static or top-level
+  /*
+  @pragma('vm:entry-point')
+  static void _overlayEntryPoint(SystemWindowPrefetchArgument? argument) {
+    if (argument?.tag == "close_button") {
+      SystemAlertWindow.closeSystemWindow(prefMode: SystemWindowPrefMode.OVERLAY);
+    }
+  }
+  */
+
+  Future<void> _requestOverlayPermissions() async {
+    await SystemAlertWindow.requestPermissions(prefMode: SystemWindowPrefMode.OVERLAY);
+  }
+
+  void _showOverlay() {
+    SystemAlertWindow.showSystemWindow(
+      height: 100,
+      gravity: SystemWindowGravity.BOTTOM,
+      prefMode: SystemWindowPrefMode.OVERLAY,
+      /* 
+      // Temporary commented out due to analysis issues with package version
+      header: SystemWindowHeader(
+        subTitle: SystemWindowText(
+          text: "WhisperFlow Captions",
+          fontSize: 10,
+          textColor: Colors.white,
+        ),
+      ),
+      body: SystemWindowBody(
+        rows: [
+          EachRow(
+            columns: [
+              EachColumn(
+                text: SystemWindowText(
+                  text: "正在监听...",
+                  fontSize: 16,
+                  textColor: Colors.white,
+                ),
+              ),
+            ],
+            gravity: ContentGravity.CENTER,
+          ),
+        ],
+      ),
+      */
+    );
   }
 
   @override
@@ -49,19 +100,16 @@ class _TranslatorHomePageState extends State<TranslatorHomePage> {
   Future<void> _toggleRecording() async {
     try {
       if (_isRecording) {
-        // Stop recording
         final path = await _audioRecorder.stop();
         setState(() {
           _isRecording = false;
           _displayText = path != null ? '录制到的文件路径:\n$path' : '录制失败或未保存';
         });
       } else {
-        // Start recording
         if (await _audioRecorder.hasPermission()) {
           final directory = await getTemporaryDirectory();
           final path = '${directory.path}/audio_${DateTime.now().millisecondsSinceEpoch}.m4a';
 
-          // Start recording to file
           await _audioRecorder.start(const RecordConfig(), path: path);
           
           setState(() {
@@ -85,6 +133,16 @@ class _TranslatorHomePageState extends State<TranslatorHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('WhisperFlow'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.picture_in_picture),
+            tooltip: '开启悬浮字幕',
+            onPressed: _showOverlay,
+          ),
+        ],
+      ),
       body: Center(
         child: Card(
           color: Colors.black87,
