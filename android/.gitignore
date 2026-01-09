@@ -12,3 +12,7 @@ GeneratedPluginRegistrant.java
 key.properties
 **/*.keystore
 **/*.jks
+
+# 在 android/.gitignore 中添加
+.kotlin/errors/
+*.log
